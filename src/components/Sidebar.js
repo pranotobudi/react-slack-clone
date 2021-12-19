@@ -62,10 +62,12 @@ export default function Sidebar() {
             {/* {channels?.docs.map((doc) => {
                 <SidebarOption key={doc.id} id={doc.id} addChannelOption title={doc.data().name}  />
             })} */}
+            {/* execute if channels available, because it is async, will throw error if not availables */}
             {channels?.docs.map((doc) => (
                 // console.log(doc.id);
                 // console.log(doc.data().name);
-                <SidebarOption key={doc.id} id={doc.id}  title={doc.data().name}  />
+                // roomName and title share the same data;
+                <SidebarOption key={doc.id} id={doc.id} roomName={doc.get("name")}  title={doc.data().name}  />
             ))}
             
         </SidebarContainer>

@@ -6,7 +6,7 @@ import { collection, addDoc, getFirestore } from "firebase/firestore";
 import {enterRoom} from "../features/appSlice";
 import { useDispatch } from "react-redux";
 
-export default function SidebarOption({id, Icon, title, addChannelOption}) {
+export default function SidebarOption({id, roomName, Icon, title, addChannelOption}) {
     const dispatch = useDispatch();
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -27,9 +27,11 @@ export default function SidebarOption({id, Icon, title, addChannelOption}) {
         }
     };
     const selectChannel = () => {
+        console.log("roomID: ",id);
         if (id){
             dispatch(enterRoom({
-                roomid: id
+                roomId: id,
+                roomName: roomName,
             }))
         }
     };
