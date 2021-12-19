@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from "styled-components";
 import InfoIcon from '@mui/icons-material/Info';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -13,6 +13,7 @@ import { selectRoomId, selectRoomName } from '../features/appSlice'
 
 
 export default function Chat() {
+    const chatRef = useRef(null);
     const roomId = useSelector(selectRoomId);
     const roomName = useSelector(selectRoomName);
     console.log("Chat-selectRoomId: ", roomId);
@@ -28,51 +29,67 @@ export default function Chat() {
             snapshotListenOptions: { includeMetadataChanges: true },
           }
     );
+
+    useEffect(()=>{
+        chatRef?.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+    }, [roomId, loading]);
+    // second parameter is dependency: effect will activate if the value in the list change
     // console.log(roomMessages);
     
     return (
         <ChatContainer>
-            <>
-            <Header>
-                <HeaderLeft>
-                    <h4>
-                        <strong>#{roomName}</strong>
-                    </h4>
-                    <StarBorderIcon />
-
-                </HeaderLeft>
-                <HeaderRight>
-                    <p>
-                        <InfoIcon /> Details
-                    </p>
-                </HeaderRight>
-
-            </Header>
-            <ChatMessages>
-                { 
-                    // roomMessages could be undefined because async, 
-                    // so only executed if available, otherwise it will throw error
-                    roomMessages?.docs.map((chat) => {
-                        // doc.data() is never undefined for query doc snapshots
-                        const {message, timestamp, user, userImage} = chat.data();
-                        // const chatMessage = {id:doc.id, message:message, timestamp:timestamp, user:user, userImage:userImage};
-                        console.log("HERE>>.")
-                        console.log("id: ", chat.id, "userImage: ", userImage);
-                        return (
-                            <Message 
-                                key={chat.id}
-                                message={chat.get("message")}
-                                timestamp={timestamp}
-                                user={user}
-                                userImage={userImage}
-                            />
-                        );
-                    })
-                    // <p>{roomMessages.length}</p>
-                }
-            </ChatMessages>
-            <ChatInput />
-            </>
+            {roomId && roomName && (
+                <>
+                <Header>
+                    <HeaderLeft>
+                        <h4>
+                            <strong>#{roomName}</strong>
+                        </h4>
+                        <StarBorderIcon />
+    
+                    </HeaderLeft>
+                    <HeaderRight>
+                        <p>
+                            <InfoIcon /> Details
+                        </p>
+                    </HeaderRight>
+    
+                </Header>
+                <ChatMessages>
+                    { 
+                        // roomMessages could be undefined because async, 
+                        // so only executed if available, otherwise it will throw error
+                        roomMessages?.docs.map((chat) => {
+                            // doc.data() is never undefined for query doc snapshots
+                            const {message, timestamp, user, userImage} = chat.data();
+                            // const chatMessage = {id:doc.id, message:message, timestamp:timestamp, user:user, userImage:userImage};
+                            console.log("HERE>>.")
+                            console.log("id: ", chat.id, "userImage: ", userImage);
+                            return (
+                                <Message 
+                                    key={chat.id}
+                                    message={chat.get("message")}
+                                    timestamp={timestamp}
+                                    user={user}
+                                    userImage={userImage}
+                                />
+                            );
+                        })
+                        // <p>{roomMessages.length}</p>
+                    }
+    
+                    <ChatBottom ref={chatRef} />
+                </ChatMessages>
+    
+                <ChatInput 
+                    chatRef={chatRef}
+                    channelName={roomName}
+                    channelId={roomId}
+                />
+                </>                    
+            )}
         </ChatContainer>
     )
 }
@@ -118,3 +135,7 @@ const ChatContainer = styled.div`
 `;
 
 const ChatMessages = styled.div``;
+
+const ChatBottom = styled.div`
+    padding-bottom: 200px;
+`;

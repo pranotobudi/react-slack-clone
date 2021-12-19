@@ -7,7 +7,7 @@ import { collection, addDoc, doc, getDoc, getFirestore, Timestamp } from "fireba
 import { useSelector } from "react-redux"
 import { selectRoomId, selectRoomName } from '../features/appSlice'
 
-export default function ChatInput(channelName, channelId) {
+export default function ChatInput({channelName, channelId, chatRef}) {
     const [input, setInput] = useState("");
     const roomId = useSelector(selectRoomId);
     const roomName = useSelector(selectRoomName);
@@ -44,6 +44,10 @@ export default function ChatInput(channelName, channelId) {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+        chatRef.current.scrollIntoView({
+            behavior: "smooth",
+        });
+    
         setInput("");
     };
 
