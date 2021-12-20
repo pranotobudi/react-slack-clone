@@ -24,6 +24,7 @@ export default function Sidebar() {
     // Initialize Firebase
     // const app = initializeApp(firebaseConfig);
     // const db = getFirestore(app);
+    console.log("Sidebar comp")
     const [channels, loading, error] = useCollection(
         collection(db, 'rooms'),
         {

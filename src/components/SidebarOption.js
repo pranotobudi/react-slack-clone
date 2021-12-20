@@ -11,6 +11,8 @@ export default function SidebarOption({id, roomName, Icon, title, addChannelOpti
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    console.log("SidebarOption comp")
+
     const addChannel = async () => {
 
         const channelName = prompt("Please enter the channel name");

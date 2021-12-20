@@ -21,7 +21,7 @@ import Spinner from 'react-spinkit'
 
 function App() {
   const [user, loading] =useAuthState(auth);
-
+  console.log("App comp")
   if (loading){
     return (
       <AppLoading>

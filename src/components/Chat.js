@@ -65,8 +65,8 @@ export default function Chat() {
                             // doc.data() is never undefined for query doc snapshots
                             const {message, timestamp, user, userImage} = chat.data();
                             // const chatMessage = {id:doc.id, message:message, timestamp:timestamp, user:user, userImage:userImage};
-                            console.log("HERE>>.")
-                            console.log("id: ", chat.id, "userImage: ", userImage);
+                            // console.log("CHAT - ChatMessages id: ", chat.id)
+                            // console.log("id: ", chat.id, "userImage: ", userImage);
                             return (
                                 <Message 
                                     key={chat.id}

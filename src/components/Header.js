@@ -11,6 +11,7 @@ import { auth } from "../firebase";
 export default function Header() {
 
     const [user] = useAuthState(auth);
+    console.log("Header comp")
     // console.log("user photoURL:", user.photoURL);
     // console.log("user displayName:", user.displayName);
     const signOutHandler = (e) => {
