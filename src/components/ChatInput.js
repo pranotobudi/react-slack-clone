@@ -6,6 +6,8 @@ import { initializeApp } from "firebase/app";
 import { collection, addDoc, doc, getDoc, getFirestore, Timestamp } from "firebase/firestore"; 
 import { useSelector } from "react-redux"
 import { selectRoomId, selectRoomName } from '../features/appSlice'
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 export default function ChatInput({channelName, channelId, chatRef}) {
     const [input, setInput] = useState("");
@@ -14,6 +16,8 @@ export default function ChatInput({channelName, channelId, chatRef}) {
     console.log("ChatInput-selectRoomId: ", roomId);    
     console.log("ChatInput-channelName: ", channelName);    
     console.log("ChatInput-channelId: ", channelId);    
+
+    const [user] = useAuthState(auth);
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -37,8 +41,9 @@ export default function ChatInput({channelName, channelId, chatRef}) {
             const docRef = await addDoc(collection(db, "rooms", channelId.toString(), "messages"), {
                 message: input,
                 timestamp: Timestamp.now(),
-                user:'Pranoto Budi',
-                userImage: "https://randomuser.me/api/portraits/men/17.jpg",
+                user:user.displayName,
+                userImage: user.photoURL,
+                //"https://randomuser.me/api/portraits/men/17.jpg"
             });
             console.log("Document written with ID: ", docRef.id);
         } catch (e) {

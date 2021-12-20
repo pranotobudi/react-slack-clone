@@ -14,20 +14,25 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useCollection } from 'react-firebase-hooks/firestore'
-import { firebaseConfig } from '../firebase';
-import { initializeApp } from "firebase/app";
+// import { firebaseConfig } from '../firebase';
+// import { initializeApp } from "firebase/app";
 import { collection, getFirestore } from "firebase/firestore"; 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../firebase";
 
 export default function Sidebar() {
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    // const app = initializeApp(firebaseConfig);
+    // const db = getFirestore(app);
     const [channels, loading, error] = useCollection(
         collection(db, 'rooms'),
         {
           snapshotListenOptions: { includeMetadataChanges: true },
         }
       );
+
+    const [user] = useAuthState(auth);
+ 
     //   channels.docs.map((doc) => {
     //     console.log(doc.data().name)
     // })
@@ -40,7 +45,8 @@ export default function Sidebar() {
                     <h2>My Slack</h2>
                     <h3>
                         <FiberManualRecordIcon />
-                        Pranoto Budi
+                        {/* Pranoto Budi */}
+                        {user.displayName}
                     </h3>
                 </SidebarInfo>
                 <CreateIcon />
