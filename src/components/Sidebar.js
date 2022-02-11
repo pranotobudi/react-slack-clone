@@ -33,11 +33,6 @@ export default function Sidebar() {
       );
 
     const [user] = useAuthState(auth);
- 
-    //   channels.docs.map((doc) => {
-    //     console.log(doc.data().name)
-    // })
-    
 
     return (
         <SidebarContainer>

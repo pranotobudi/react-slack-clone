@@ -32,6 +32,7 @@ const MessageContainer = styled.div`
 
 const MessageInfo = styled.div`
     padding-left: 10px;
+    text-align: left;
 
     > h4 > span {
         color: gray;

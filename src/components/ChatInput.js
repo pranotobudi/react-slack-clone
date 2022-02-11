@@ -29,14 +29,10 @@ export default function ChatInput({channelName, channelId, chatRef}) {
     
     // await setDoc(doc(db, "cities", "new-city-id"), data);
      
-    const sendMessage = async (e) => {
+    const addDocToFirebase = async (e) => {
         channelId=roomId
         console.log("input: ", input)
         console.log("channelID: ", channelId)
-        e.preventDefault(); // prevent refresh
-        if (!channelId){
-            return false;
-        }
         try {
             const docRef = await addDoc(collection(db, "rooms", channelId.toString(), "messages"), {
                 message: input,
@@ -49,6 +45,16 @@ export default function ChatInput({channelName, channelId, chatRef}) {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+
+    }
+    const sendMessage = async (e) => {
+        e.preventDefault(); // prevent refresh
+        channelId=roomId
+        if (!channelId){
+            return false;
+        }
+        addDocToFirebase();
+
         chatRef.current.scrollIntoView({
             behavior: "smooth",
         });
@@ -60,9 +66,10 @@ export default function ChatInput({channelName, channelId, chatRef}) {
         <ChatInputContainer>
             <form>
                 <input 
-                value={input} 
-                onChange={(e)=>setInput(e.target.value)}
-                placeholder={`Message #${roomName}`} />
+                    value={input} 
+                    onChange={(e)=>setInput(e.target.value)}
+                    placeholder={`Message #${roomName}`} 
+                />
                 <Button hidden type="submit" onClick={sendMessage}>
                     SEND
                 </Button>
